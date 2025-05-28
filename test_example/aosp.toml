@@ -1,0 +1,6 @@
+[infomation]
+name = "aosp"
+description = "Android Source Code utils"
+
+[install.env]
+REPO_URL = "https://mirrors.tuna.tsinghua.edu.cn/git/git-repo"

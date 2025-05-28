@@ -1,0 +1,32 @@
+[infomation]
+name = "misc"
+description = "Misc utils"
+
+[install]
+apt = ["patchelf", "psmisc", "tree"]
+
+[install.alias]
+needed = "patchelf --print-needed"
+
+[install.command]
+
+needed_r = """
+#!/bin/bash
+
+_do_print(){
+    test -f $1 || return -1
+    for dep in $(patchelf --print-needed $1); do
+        echo $dep
+        test -f $dep &&  _do_print $dep
+    done
+}
+
+needed_r(){
+    results=$(_do_print $1  | sort | uniq)
+    for result in ${results[@]}; do
+        echo $result
+    done
+}
+
+needed_r $@
+"""

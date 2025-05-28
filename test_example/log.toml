@@ -1,0 +1,9 @@
+[infomation]
+
+name = "log"
+
+[install.command]
+log = """
+#!/bin/bash
+${@:1} 2>&1 | tee $1_$(date +%g%m%d_%H%M%S).log
+"""

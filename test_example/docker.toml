@@ -1,0 +1,5 @@
+[infomation]
+name = "docker"
+
+[install.alias]
+docker-clean = 'docker rmi $(docker images -qf "dangling=true")'

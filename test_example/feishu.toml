@@ -1,0 +1,58 @@
+[infomation]
+name = "feishu"
+
+[install.command]
+
+feishu_hook = """
+#!/bin/bash
+
+feishu_hook() {
+    host=$(hostname)
+    msg=$1
+    tmp_json=/tmp/action.json
+
+    url=https://www.feishu.cn/flow/api/trigger-webhook/bf375ec06346938f1da2cc93fdad604a
+
+    cat >$tmp_json <<EOF || return -1
+    {
+        "from": "$host",
+        "msg": "$msg"
+    }
+    EOF
+
+    echo $content
+    curl $url -X POST -d @$tmp_json -H 'Content-Type: application/json'
+    rm -f $tmp_json
+}
+
+feishu_hook $@
+"""
+
+ActionHook = """
+#!/bin/bash
+
+ActionHook() {
+    cmd=${@:1}
+    test -z "$cmd" && echo "Comand is empty" && return -1
+
+    start=$(date +%s.%N)
+    eval $cmd
+    result=$?
+    end=$(date +%s.%N)
+    elapsed=$(echo "scale=3; ($end-$start)/1" | bc)
+
+    msg=$(
+        cat <<EOF
+    Action Done\n
+
+    Command: $cmd\n
+    Result: $result\n
+    Toke: $elapsed Sec\n
+    EOF
+    )
+    echo "Triger Actions"
+    feishu_hook "$msg"
+}
+
+ActionHook $@
+"""

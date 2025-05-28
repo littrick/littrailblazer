@@ -1,0 +1,165 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "Config",
+  "description": "配置列表的格式",
+  "type": "object",
+  "properties": {
+    "infomation": {
+      "description": "基本信息",
+      "$ref": "#/$defs/Info"
+    },
+    "install": {
+      "description": "安装列表",
+      "$ref": "#/$defs/InstallList"
+    }
+  },
+  "required": [
+    "infomation",
+    "install"
+  ],
+  "$defs": {
+    "Content": {
+      "oneOf": [
+        {
+          "type": "object",
+          "properties": {
+            "raw": {
+              "type": "string"
+            }
+          },
+          "additionalProperties": false,
+          "required": [
+            "raw"
+          ]
+        },
+        {
+          "type": "object",
+          "properties": {
+            "file": {
+              "type": "string"
+            }
+          },
+          "additionalProperties": false,
+          "required": [
+            "file"
+          ]
+        },
+        {
+          "type": "object",
+          "properties": {
+            "url": {
+              "type": "string"
+            }
+          },
+          "additionalProperties": false,
+          "required": [
+            "url"
+          ]
+        }
+      ]
+    },
+    "Info": {
+      "description": "配置的基本信息",
+      "type": "object",
+      "properties": {
+        "description": {
+          "description": "该配置的描述说明",
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "install_while": {
+          "description": "部署条件，默认为true，shell命令运行为true时，配置列表才会部署",
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "name": {
+          "description": "配置名称，关于该配置的唯一识别id",
+          "type": "string"
+        }
+      },
+      "required": [
+        "name"
+      ]
+    },
+    "InstallList": {
+      "description": "安装文件的列表",
+      "type": "object",
+      "properties": {
+        "alias": {
+          "description": "命令别名，与`alias mycmd=\"echo mycmd run\"`效果类似: <命令别名> <实际命令>",
+          "type": [
+            "object",
+            "null"
+          ],
+          "additionalProperties": {
+            "type": "string"
+          }
+        },
+        "apt": {
+          "description": "需要apt软件源安装的软件列表",
+          "type": [
+            "array",
+            "null"
+          ],
+          "items": {
+            "type": "string"
+          }
+        },
+        "command": {
+          "description": "额外自定义命令，可以是脚本内容或者二进制文件: <命令名> <脚本内容|二进制文件路径>",
+          "type": [
+            "object",
+            "null"
+          ],
+          "additionalProperties": {
+            "$ref": "#/$defs/StringOr_for_Content"
+          }
+        },
+        "env": {
+          "description": "环境变量",
+          "type": [
+            "object",
+            "null"
+          ],
+          "additionalProperties": {
+            "type": "string"
+          }
+        },
+        "envrc": {
+          "description": "额外rc脚本，可以在里面定义函数，或者做一些初始化的操作，会在.bashrc里source",
+          "type": [
+            "array",
+            "null"
+          ],
+          "items": {
+            "$ref": "#/$defs/Content"
+          }
+        },
+        "files": {
+          "description": "需要复制的文件，默认会安装在固定目录下，局限较大，不建议使用，优先使用以上列表",
+          "type": [
+            "object",
+            "null"
+          ],
+          "additionalProperties": {
+            "$ref": "#/$defs/StringOr_for_Content"
+          }
+        }
+      }
+    },
+    "StringOr_for_Content": {
+      "anyOf": [
+        {
+          "type": "string"
+        },
+        {
+          "$ref": "#/$defs/Content"
+        }
+      ]
+    }
+  }
+}

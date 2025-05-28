@@ -1,0 +1,7 @@
+[infomation]
+name = "bash"
+
+[install.env]
+PROMPT_DIRTRIM = "2"
+PS1 = "\\[\\033[01;32m\\]\\u@[\\$(date +%T)]\\[\\033[00m\\]:\\[\\033[01;34m\\]\\w\\[\\033[00m\\]\\$ "
+

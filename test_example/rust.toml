@@ -1,0 +1,14 @@
+[infomation]
+name = "rust"
+description = "Rust development utils"
+
+[install.alias]
+cargo = "fix_cargo"
+
+[install.command]
+fix_cargo = """
+#!/bin/bash
+set -- "${@/-E/--example}"
+set -- "${@/-A/--all}"
+cargo $@
+"""

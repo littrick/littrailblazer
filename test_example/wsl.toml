@@ -1,0 +1,33 @@
+[infomation]
+name = "wsl"
+description = "WSL utils"
+install_while = "[[ $(uname -r) == *WSL2* ]]"
+
+[install]
+apt = ["patchelf", "openssh-server"]
+
+
+[install.command]
+clash = """
+(docker stats --no-stream clash 2> /dev/null \
+    && echo "clash is running") \
+    || (docker run -dp 7890:7890 --name clash --rm clash_igg \
+    && docker logs clash)
+"""
+
+clash_log = """
+docker logs clash
+"""
+
+clasg_stop = """
+docker stop clash
+unset all_proxy
+"""
+
+[install.alias]
+docker-fix-net = 'sudo update-alternatives --set iptables /usr/sbin/iptables-legacy'
+docker-enable = 'test -S /var/run/docker.sock || ( sudo setsid dockerd && echo "dockerd enabled" )'
+docker-disable = '( test -f /var/run/docker.pid && sudo kill -2 $(cat /var/run/docker.pid ) || echo "dockerd not running" )'
+proxy = "export all_proxy=$(ip route show default | cut -d ' ' -f3):7890"
+proxy-off = 'unset all_proxy'
+sshd-enable = 'sudo mkdir -p /run/sshd && sudo /usr/sbin/sshd'
