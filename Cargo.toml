@@ -2,9 +2,12 @@
 name = "distro_pioneer"
 version = "0.1.0"
 edition = "2024"
+authors = ["Littrick <ydd_180@163.com>"]
+default-run = "pioneer"
 
 [dependencies]
 anyhow = "1.0.98"
+bytes = "1.10.1"
 chrono = "0.4.41"
 clap = { version = "4.5.39", features = ["derive"] }
 color-eyre = "0.6.4"
@@ -14,6 +17,7 @@ env_logger = "0.11.8"
 lazy_static = "1.5.0"
 log = "0.4.27"
 regex = "1.11.1"
+reqwest = { version = "0.12.20", features = ["rustls-tls", "blocking"], default-features = false }
 schemars = "0.9.0"
 serde = { version = "1.0.219", features = ["serde_derive"] }
 serde_jsonc = "1.0.108"
@@ -21,6 +25,7 @@ tempfile = "3.20.0"
 toml = "0.8.22"
 url = { version = "2.5.4", features = ["serde"] }
 which = "7.0.3"
+
 
 [build-dependencies]
 anyhow = "1.0.98"
