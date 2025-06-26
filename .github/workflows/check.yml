@@ -1,0 +1,26 @@
+name: check
+
+on:
+  push:
+
+env:
+  CARGO_TERM_COLOR: always
+
+jobs:
+  check:
+    runs-on: ubuntu-latest
+
+    strategy:
+      matrix:
+        target:
+        - x86_64-unknown-linux-gnu
+        - x86_64-unknown-linux-musl
+
+    steps:
+    - name: Checkout
+      uses: actions/checkout@v4
+
+    - name: Check
+      run: cargo check --all --target ${{ matrix.target }}
+
+

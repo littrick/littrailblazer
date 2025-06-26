@@ -1,0 +1,48 @@
+name: build
+
+on:
+  workflow_dispatch:
+    inputs:
+      target:
+        description: "Cross-compilation target required for your Rust project"
+        type: string
+        required: true
+
+      archive-name:
+        type: string
+        default: archive
+
+      archive-paths:
+        description: "Paths of all files you need to archive"
+        type: string
+        required: true
+
+      retention-days:
+        description: "Archive retention period you need to set"
+        type: number
+        default: 1
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Checkout
+      uses: actions/checkout@v4
+
+    - name: Install tools
+      if: ${{ inputs.target }} == "x86_64-pc-windows-gnu"
+      run:
+        sudo apt update &&
+        sudo apt install -y mingw-w64
+
+    - name: Release build'
+      run: |
+        cargo build --release --all-features --all --target ${{ inputs.target }}
+
+    - name: Upload
+      uses: actions/upload-artifact@v4
+      with:
+        name: ${{ inputs.archive-name }}
+        path: ${{ inputs.archive-paths }}
+        retention-days: ${{ inputs.retention-days }}

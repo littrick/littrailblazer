@@ -1,0 +1,45 @@
+name: package
+
+on:
+  workflow_dispatch:
+    inputs:
+      target:
+        description: "Cross-compilation target required for your Rust project"
+        type: choice
+        options:
+          - x86_64-unknown-linux-gnu
+          - x86_64-unknown-linux-musl
+          - all
+        required: true
+
+      archive-name:
+        type: string
+        default: archive
+
+      retention-days:
+        description: "Archive retention period you need to set"
+        type: number
+        default: 1
+
+jobs:
+  build-gnu:
+    uses: ./.github/workflows/build.yml
+    if: ${{ inputs.target == 'all' || inputs.target == 'x86_64-unknown-linux-gnu' }}
+    with:
+      target: x86_64-unknown-linux-gnu
+      archive-name: linux-archive
+      archive-paths: |
+        target/x86_64-unknown-linux-gnu/release/pioneer
+        target/x86_64-unknown-linux-gnu/release/script_builder
+        configlist.schema.json
+
+  build-musl:
+    uses: ./.github/workflows/build.yml
+    if: ${{ inputs.target == 'all' || inputs.target == 'x86_64-unknown-linux-musl' }}
+    with:
+      target: x86_64-unknown-linux-musl
+      archive-name: linux-archive
+      archive-paths: |
+        target/x86_64-unknown-linux-musl/release/pioneer
+        target/x86_64-unknown-linux-musl/release/script_builder
+        configlist.schema.json
