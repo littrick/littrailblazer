@@ -27,7 +27,7 @@ jobs:
     if: ${{ inputs.target == 'all' || inputs.target == 'x86_64-unknown-linux-gnu' }}
     with:
       target: x86_64-unknown-linux-gnu
-      archive-name: linux-archive
+      archive-name: linux-gnu-archive
       archive-paths: |
         target/x86_64-unknown-linux-gnu/release/pioneer
         target/x86_64-unknown-linux-gnu/release/script_builder
@@ -38,7 +38,7 @@ jobs:
     if: ${{ inputs.target == 'all' || inputs.target == 'x86_64-unknown-linux-musl' }}
     with:
       target: x86_64-unknown-linux-musl
-      archive-name: linux-archive
+      archive-name: linux-musl-archive
       archive-paths: |
         target/x86_64-unknown-linux-musl/release/pioneer
         target/x86_64-unknown-linux-musl/release/script_builder
