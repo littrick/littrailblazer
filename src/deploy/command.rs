@@ -83,6 +83,8 @@ impl InstallItem for Command {
     }
 
     fn install(&self) -> anyhow::Result<super::Installed> {
+        info!(target: "Command", "Installing {}...", self.name);
+
         if let Some(dir) = self.install_file.parent() {
             FileOp::mkdir(dir).context(format!("Fail to mkdir {}", dir.to_string_lossy()))?;
         }

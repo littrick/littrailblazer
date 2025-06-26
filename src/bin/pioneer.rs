@@ -8,10 +8,14 @@ use std::path::PathBuf;
 #[derive(Parser, Debug)]
 #[command(author, version, about, long_about = None)]
 enum Args {
+    /// 开始pioneer，检查和安装软件、环境变量、rc脚本等
     Install {
-        #[arg(required = true, value_name = "CONFIG", num_args = 1..)]
+        /// 用于pioneer的配置文件列表
+        #[arg(required = true, num_args = 1..)]
         configs: Vec<PathBuf>,
     },
+
+    /// 卸载删除所有已安装的items
     Uninstall {},
 }
 

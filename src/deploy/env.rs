@@ -24,7 +24,7 @@ impl Env {
 
 impl InstallItem for Env {
     fn check(&self) -> anyhow::Result<()> {
-        info!(target: "Env", "Checking env key {}", self.key);
+        info!(target: "Env", "Checking env key {}...", self.key);
 
         let re = Regex::new(r"^[a-zA-Z_][a-zA-Z0-9_-]*$").unwrap();
         anyhow::ensure!(
@@ -35,6 +35,7 @@ impl InstallItem for Env {
     }
 
     fn install(&self) -> anyhow::Result<Installed> {
+        info!(target: "Env", "Installing {}...", self.key);
         Ok(Installed::Rc {
             command: format!("export {}=\"{}\"", self.key, self.value),
         })

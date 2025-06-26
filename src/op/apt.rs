@@ -1,7 +1,6 @@
 use crate::program::run_or_sudo;
 use anyhow::{Context, Ok, Result, anyhow};
 use lazy_static::lazy_static;
-use log::info;
 use std::collections::HashSet;
 use std::ffi::OsStr;
 use std::fmt::Debug;
@@ -45,8 +44,6 @@ impl AptOp {
     {
         let name = name.as_ref().to_string_lossy().to_string();
 
-        info!(target: "APT", "Checking package: {name}...");
-
         /* 创建命令 */
         self.list
             .get(&name)
@@ -67,7 +64,6 @@ impl AptOp {
 
     pub fn remove<S: AsRef<OsStr>>(&self, name: S) -> Result<()> {
         let name = name.as_ref();
-        info!( target: "APT", "Removeing {} ...", name.to_string_lossy());
 
         /* 创建命令 */
         let mut cmd = Command::new(&self.apt_path);

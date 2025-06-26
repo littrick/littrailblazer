@@ -35,6 +35,7 @@ impl InstallItem for Alias {
     }
 
     fn install(&self) -> anyhow::Result<Installed> {
+        info!(target: "Alias", "Installing {}...", self.name);
         Ok(Installed::Rc {
             command: format!(
                 "alias {}=$'{}'",

@@ -6,6 +6,7 @@ use crate::{
     types::config::{Content, StringOr},
 };
 use anyhow::{Context, ensure};
+use log::info;
 
 #[derive(Debug)]
 pub struct File {
@@ -44,6 +45,7 @@ impl File {
 
 impl InstallItem for File {
     fn check(&self) -> anyhow::Result<()> {
+        info!(target: "File", "Checking file {:?}...", self.content);
         match &self.content {
             StringOr::String(_) | StringOr::Object(Content::Raw(_)) => {}
             StringOr::Object(Content::File(path)) => {
@@ -77,6 +79,7 @@ impl InstallItem for File {
     }
 
     fn install(&self) -> anyhow::Result<Installed> {
+        info!(target: "File", "Installing file {:?}...", self.content);
         if let Some(dir) = self.install_file.parent() {
             FileOp::mkdir(dir).context(format!("Fail to mkdir {}", dir.to_string_lossy()))?;
         }

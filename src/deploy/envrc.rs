@@ -4,6 +4,7 @@ use crate::{
     types::config::Content,
 };
 use anyhow::{Context, ensure};
+use log::info;
 use std::{
     fs,
     path::{Path, PathBuf},
@@ -29,6 +30,7 @@ impl Envrc {
 
 impl InstallItem for Envrc {
     fn check(&self) -> anyhow::Result<()> {
+        info!(target: "Envrc", "Checking envrc {:?}...", self.content);
         match &self.content {
             Content::Raw(_) => {}
             Content::File(path) => {
@@ -50,6 +52,7 @@ impl InstallItem for Envrc {
     }
 
     fn install(&self) -> anyhow::Result<Installed> {
+        info!(target: "Envrc", "Installing envrc {:?}...", self.content);
         let rc_content = match &self.content {
             Content::Raw(content) => content.clone(),
             Content::File(path) => fs::read_to_string(path)

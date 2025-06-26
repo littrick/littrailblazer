@@ -2,7 +2,7 @@ use crate::{
     deploy::{InstallItem, Installed},
     op::apt::AptOp,
 };
-use log::info;
+use log::*;
 
 #[derive(Debug)]
 pub struct Apt {
@@ -20,7 +20,7 @@ impl Apt {
 
 impl InstallItem for Apt {
     fn check(&self) -> anyhow::Result<()> {
-        info!(target: "APT", "Checking package {}", self.sw_name);
+        info!(target: "APT", "Checking package {}...", self.sw_name);
         AptOp::try_get()?
             .lock()
             .unwrap()
@@ -30,7 +30,7 @@ impl InstallItem for Apt {
     }
 
     fn install(&self) -> anyhow::Result<Installed> {
-        info!(target: "APT", "Installing {}", self.sw_name);
+        info!(target: "APT", "Installing {}...", self.sw_name);
         AptOp::try_get()?
             .lock()
             .unwrap()

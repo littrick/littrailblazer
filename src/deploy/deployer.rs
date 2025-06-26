@@ -78,7 +78,7 @@ impl Deployer {
             let config_path = config_info.file.parent().unwrap_or(Path::new("."));
 
             if let Some(command) = &config.infomation.install_while {
-                info!(target: "Deployer", "Checking for {}: {command}", config.infomation.name);
+                info!(target: "Deployer", "Checking the precondition for {}: {command}", config.infomation.name);
 
                 let check = Command::new("bash").arg("-c").arg(command).status();
 
@@ -145,7 +145,7 @@ impl Deployer {
                  config_file,
                  install_items,
              }| {
-                info!(target: "Deployer", "Checking for {}", config_file.to_string_lossy());
+                debug!(target: "Deployer", "Checking for {}", config_file.to_string_lossy());
 
                 install_items.check().context(format!(
                     "{} -> {:?} checking fail",
@@ -172,7 +172,7 @@ impl Deployer {
             install_items,
         } in &self.installers
         {
-            info!(target: "Deployer", "Installing for {}", config_file.to_string_lossy());
+            debug!(target: "Deployer", "Installing a item for {}", config_file.to_string_lossy());
 
             let installed = install_items.install().context(format!(
                 "Fail to install item: {} -> {:?}",
