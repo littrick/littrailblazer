@@ -1,4 +1,4 @@
-# Distro pioneer
+# Distro Trailblazer
 
 Every time I use a new distribution, I have to reinstall all my scripts, aliases, environment variables, and software from scratch, which is quite tedious. That's why I created this tool.
 
