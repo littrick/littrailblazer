@@ -10,7 +10,7 @@ use distro_pioneer::builder::{base64_encode, build_target};
 #[command(about = "打包检查脚本")]
 struct Args {
     /// 编译需要cargo打包的包名
-    #[arg(short, name = "package name", group = "bin-target")]
+    #[arg(name = "package name", group = "bin-target")]
     package: Option<String>,
 
     /// 选择已编译好的二进制/可执行文件

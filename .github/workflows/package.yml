@@ -62,7 +62,7 @@ jobs:
 
       - name: Build Checker
         run: |
-          cargo r --bin checker_builder -- -p checker
+          cargo r --bin checker_builder -- checker
 
       - name: Upload
         uses: actions/upload-artifact@v4
