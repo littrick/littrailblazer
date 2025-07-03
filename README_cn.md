@@ -11,8 +11,10 @@
 
 ## binary说明
 
-- pioneer: 用于distro开荒的主题程序，所有安装软件、别名等操作都由此实现
-- script_builder: 用于生成一键安装脚本，这个软件会将pioneer和所有配置文件全部打包到一个shell脚本内
+- `pioneer`: 用于distro开荒的主题程序，所有安装软件、别名等操作都由此实现
+- `installer_builder`: 用于生成一键安装脚本，这个软件会将`pioneer`和所有配置文件全部打包到一个shell脚本内
+- `checker`: 用于检查toml配置文件的语法
+- `checker_builder`: 用于生成`checker`的shell脚本
 
 
 ## 尝试一下
@@ -21,7 +23,7 @@
 构建installer.sh脚本
 
 ```sh
-cargo r --bin script_builder -- -p pioneer -c test_example/*.toml
+cargo r --bin installer_builder -- -p pioneer -c test_example/*.toml
 ```
 
 在容器里测试

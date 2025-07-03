@@ -20,7 +20,11 @@ So, this is a system provisioning tool designed for Debian-based distributions.
 
 - `pioneer`: The main program for provisioning the distro. It handles all software installations, aliases, and configurations.
 
-- `script_builder`: Generates a one-click installation script. This tool bundles pioneer and all configuration files into a single shell script.
+- `installer_builder`: Generates a one-click installation script. This tool bundles `pioneer` and all configuration files into a single shell script.
+
+- `checker`: Used to check the syntax of TOML configuration files
+
+- `checker_builder`: A shell script used to generate the `checker`
 
 
 ## Try It Out
@@ -28,7 +32,7 @@ So, this is a system provisioning tool designed for Debian-based distributions.
 Build the `installer.sh` Script
 
 ```sh
-cargo r --bin script_builder -- -p pioneer -c test_example/*.toml
+cargo r --bin installer_builder -- -p pioneer -c test_example/*.toml
 ```
 
 Test in a Container
