@@ -57,6 +57,9 @@ jobs:
           rustup update
           rustup default nightly
 
+      - name: Setup target
+        run: rustup target add x86_64-unknown-linux-musl
+
       - name: Build Checker
         run: |
           cargo r --bin checker_builder -- -p checker
