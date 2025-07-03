@@ -30,7 +30,8 @@ jobs:
       archive-name: linux-gnu-archive
       archive-paths: |
         target/x86_64-unknown-linux-gnu/release/pioneer
-        target/x86_64-unknown-linux-gnu/release/script_builder
+        target/x86_64-unknown-linux-gnu/release/installer_builder
+        target/x86_64-unknown-linux-gnu/release/checker_builder
         configlist.schema.json
 
   build-musl:
@@ -41,5 +42,28 @@ jobs:
       archive-name: linux-musl-archive
       archive-paths: |
         target/x86_64-unknown-linux-musl/release/pioneer
-        target/x86_64-unknown-linux-musl/release/script_builder
+        target/x86_64-unknown-linux-musl/release/installer_builder
+        target/x86_64-unknown-linux-musl/release/checker_builder
         configlist.schema.json
+
+  build-checker:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Update toolchain
+        run: |
+          rustup update
+          rustup default nightly
+
+      - name: Build Checker
+        run: |
+          cargo r --bin checker_builder -- -p checker
+
+      - name: Upload
+        uses: actions/upload-artifact@v4
+        with:
+          name: checker
+          path: checker.sh
+          retention-days: 1

@@ -1,6 +1,0 @@
-{
-  "evenBetterToml.schema.associations": {
-    "config.toml": "./SysConfig/configlist.schema.json",
-    "config2.toml": "./SysConfig/configlist2.schema.json"
-  }
-}
