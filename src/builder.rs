@@ -1,7 +1,9 @@
 use anyhow::{Result, ensure};
 use std::fs;
+use std::hash::{DefaultHasher, Hash, Hasher};
 use std::path::{Path, PathBuf};
 use std::process::Command;
+use std::time::{SystemTime, UNIX_EPOCH};
 use tempfile::NamedTempFile;
 
 pub fn build_target(package_name: &str, target: &str, release: bool) -> Result<PathBuf> {
@@ -48,4 +50,17 @@ where
     ensure!(status.success(), "base64 encoding fail");
 
     Ok(fs::read_to_string(output_file)?)
+}
+
+pub fn unique_string() -> String {
+    let mut hasher = DefaultHasher::new();
+    let timestamp = SystemTime::now()
+        .duration_since(UNIX_EPOCH)
+        .unwrap()
+        .as_nanos();
+
+    timestamp.hash(&mut hasher);
+    let hash = hasher.finish();
+
+    format!("{:x}", hash)
 }
