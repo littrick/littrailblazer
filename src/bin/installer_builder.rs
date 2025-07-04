@@ -1,7 +1,7 @@
 use anyhow::{Context, Result, anyhow};
 use clap::{ArgGroup, Parser, command};
 use distro_pioneer::{
-    builder::{base64_encode, build_target},
+    builder::{base64_encode, build_target, unique_string},
     types::config::Config,
 };
 use std::{fs, path::PathBuf};
@@ -63,6 +63,8 @@ fn main() -> Result<()> {
         configs.push(config);
     }
 
+    let eof = unique_string();
+
     let mut mk_configs = "config_files=()\n".to_string();
     for config in configs {
         let msg = format!("echo making {}.toml...", config.infomation.name);
@@ -71,7 +73,7 @@ fn main() -> Result<()> {
             config.infomation.name
         );
         let config_file = format!(
-            "cat > ${{config_file}} <<'EOF'\n{}\nEOF",
+            "cat > ${{config_file}} <<'{eof}'\n{}\n{eof}",
             toml::to_string_pretty(&config)?
         );
         let append_configs = "config_files=(${config_files[@]} $config_file)";
@@ -84,7 +86,7 @@ fn main() -> Result<()> {
 
     let mk_bin = {
         let mk_file = format!("bin_exe=$(mktemp --suffix=.bin)");
-        let decode = format!("base64 -d > ${{bin_exe}} <<'EOF'\n{}\nEOF", base64);
+        let decode = format!("base64 -d > ${{bin_exe}} <<'{eof}'\n{}\n{eof}", base64);
         let chmod = "chmod +x ${bin_exe}";
         format!("\n{}\n{}\n{}\n", mk_file, decode, chmod)
     };

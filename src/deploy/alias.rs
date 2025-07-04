@@ -26,10 +26,10 @@ impl InstallItem for Alias {
     fn check(&self) -> anyhow::Result<()> {
         info!(target: "Alias", "Checking alias {}", self.name);
 
-        let re = Regex::new(r"^[a-zA-Z_][a-zA-Z0-9_-]*$").unwrap();
+        let re = Regex::new(r"^[a-zA-Z_.][a-zA-Z0-9_.-]*$").unwrap();
         anyhow::ensure!(
             !self.name.is_empty() && !self.name.contains('=') && re.is_match(&self.name),
-            "Name only allows letters, numbers, underscores(_), and hyphens(-)."
+            "Name only allows letters, numbers, underscores(_), dot(.), and hyphens(-)."
         );
         Ok(())
     }

@@ -2,7 +2,7 @@ use std::{fs, path::PathBuf};
 
 use anyhow::{Context, Result, anyhow};
 use clap::{ArgGroup, Parser, command};
-use distro_pioneer::builder::{base64_encode, build_target};
+use distro_pioneer::builder::{base64_encode, build_target, unique_string};
 
 #[derive(Parser, Debug)]
 #[command(author, version, about, long_about = None)]
@@ -43,10 +43,11 @@ fn main() -> Result<()> {
     };
 
     let base64 = base64_encode(bin)?;
+    let eof = unique_string();
 
     let mk_bin = {
         let mk_file = format!("bin_exe=$(mktemp --suffix=.bin)");
-        let decode = format!("base64 -d > ${{bin_exe}} <<'EOF'\n{}\nEOF", base64);
+        let decode = format!("base64 -d > ${{bin_exe}} <<'{eof}'\n{}\n{eof}", base64);
         let chmod = "chmod +x ${bin_exe}";
         format!("\n{}\n{}\n{}\n", mk_file, decode, chmod)
     };
